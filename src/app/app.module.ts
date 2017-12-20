@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 
@@ -13,6 +14,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { UserService } from './users/user.service';
 import { HomeComponent } from './home/home.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
+import { UserStorageService } from './shared/user-storage.service';
 
 @NgModule({
   declarations: [
@@ -28,9 +30,10 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpModule
   ],
-  providers: [UserService],
+  providers: [UserService,UserStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

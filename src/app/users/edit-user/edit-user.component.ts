@@ -45,21 +45,25 @@ export class EditUserComponent implements OnInit {
 
   private populateForm(){
     let user = this.userService.getUserById(this.id);
-    this.userForm.form.patchValue({
-      firstname:user.firstname,
-      lastname:user.lastname,
-      email:user.email,
-      gender:user.gender,
-      country:user.country
-    });
+    
+    setTimeout(
+      () => {
+        this.userForm.setValue({
+          firstname:user.firstname,
+          lastname:user.lastname,
+          email:user.email,
+          gender:user.gender,
+          country:user.country
+        });
+      }
+    ,0);
   }
 
   onSubmit() {
-    let {firstname,lastname,email,gender,country} = this.userForm.value;
     if(!this.editMode){
-      this.userService.addUser(new User(this.userId,firstname,lastname,email,gender,country));
+      this.userService.addUser(this.userForm.value);
     } else {
-      this.userService.editUser(this.id,firstname,lastname,email,gender,country);
+      this.userService.editUser(this.id,this.userForm.value);
     }
     this.userForm.reset();
     this.goToUsersPage();
