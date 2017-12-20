@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-xs-12">
+    <a routerLink="new" class="btn btn-success">Add New</a>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12 table-responsive">
+    <table class="table table-striped">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Location</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngFor="let userData of users">
+        <td>{{userData.firstname}}</td>
+        <td>{{userData.lastname}}</td>
+        <td>{{userData.email}}</td>
+        <td>{{userData.gender}}</td>
+        <td>{{userData.country}}</td>
+        <td>
+          <div class="btn-group ">
+            <a [routerLink]="[userData.id]" class="btn btn-default">View</a>
+            <a [routerLink]="[userData.id,'edit']" class="btn btn-primary">Edit</a>
+            <a (click)="onDelete(userData.id)" class="btn btn-danger">Delete</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<hr/>
+<div class="row">
+  <div class="col-xs-12">
+    <router-outlet></router-outlet>
+  </div>
+</div>

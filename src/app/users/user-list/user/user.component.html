@@ -1,0 +1,7 @@
+<span class="glyphicon glyphicon-chevron-left" style="cursor:pointer" (click)="onBack()">Clear</span>
+<div *ngIf="!user" class="alert fade in alert-danger" >
+    No user found
+</div>
+<pre *ngIf="user" style="margin-top:2em">
+    {{user | json}}
+</pre>
