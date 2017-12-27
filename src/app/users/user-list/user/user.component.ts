@@ -4,26 +4,36 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { UserService } from '../../user.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: '[app-user]',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  @Input() user:User;
-  constructor(private userService:UserService,private router:Router,private route:ActivatedRoute) { }
+  user: User;
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params
         .subscribe(
-          (params:Params) => {
-            let index = params['id'];
-            this.user = this.userService.getUserById(index);
+          (params: Params) => {
+            const index = +params['id'];
+            // get data from cache.
+            this.user = this.userService.getUserFromCache(index);
+            // get data from server if it is not in the cache.
+            if (!this.user) {
+              this.userService.getUserById(index).subscribe(
+                user => {
+                  this.user = user;
+                }
+              );
+            }
           }
-        ) 
+        );
   }
 
-  onBack(){
-    this.router.navigate(["/users"]);
+  onBack() {
+    this.router.navigate(['/users']);
   }
 
 }

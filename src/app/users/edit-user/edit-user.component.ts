@@ -11,16 +11,15 @@ import { User } from '../user.model';
 })
 export class EditUserComponent implements OnInit {
   id: number;
-  userId:number
-  editMode: boolean = false;
+  editMode = false;
+  user: User;
   @ViewChild('f') userForm: NgForm;
   genders;
   countries;
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    let data = this.userService.getData();
-    this.userId= this.userService.getUsers().length+1;
+    const data = this.userService.getData();
     this.countries = data.countries;
     this.genders = data.genders;
     this.route.params
@@ -28,42 +27,55 @@ export class EditUserComponent implements OnInit {
       (params: Params) => {
         this.id = params['id'];
         this.editMode = this.id != null;
-        if(this.editMode){
+        if (this.editMode) {
           this.populateForm();
         }
       }
-    )
+      );
   }
 
   onCancel() {
     this.goToUsersPage();
   }
 
-  private goToUsersPage(){
-    this.router.navigate(["/users"]);
+  private goToUsersPage() {
+    this.router.navigate(['/users']);
   }
 
-  private populateForm(){
-    let user = this.userService.getUserById(this.id);
-    
+  private populateForm() {
+    this.user = this.userService.getUserFromCache(this.id);
+    if (!this.user) {
+      this.userService.getUserById(this.id).subscribe(
+        user => {
+          this.user = user;
+          this.fillForm();
+        }
+      );
+    } else {
+      this.fillForm();
+    }
+
+  }
+
+  private fillForm() {
     setTimeout(
       () => {
         this.userForm.setValue({
-          firstname:user.firstname,
-          lastname:user.lastname,
-          email:user.email,
-          gender:user.gender,
-          country:user.country
+          firstname: this.user.firstname,
+          lastname: this.user.lastname,
+          email: this.user.email,
+          gender: this.user.gender,
+          country: this.user.country
         });
-      }
-    ,0);
+      }, 0);
   }
 
   onSubmit() {
-    if(!this.editMode){
+    if (!this.editMode) {
       this.userService.addUser(this.userForm.value);
     } else {
-      this.userService.editUser(this.id,this.userForm.value);
+      this.userForm.value.id = this.id;
+      this.userService.editUser(this.userForm.value);
     }
     this.userForm.reset();
     this.goToUsersPage();

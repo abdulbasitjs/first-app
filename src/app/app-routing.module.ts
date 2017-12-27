@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes,RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
 import { UserComponent } from './users/user-list/user/user.component';
@@ -16,10 +16,10 @@ const appRoutes: Routes = [
         children: [{
             path: 'new',
             component: EditUserComponent
-        },{
+        }, {
             path: ':id',
             component: UserComponent
-        },{
+        }, {
             path: ':id/edit',
             component: EditUserComponent
         }]

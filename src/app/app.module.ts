@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AppRoutingModule } from './app-routing.module';
 
 
@@ -15,6 +17,7 @@ import { UserService } from './users/user.service';
 import { HomeComponent } from './home/home.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { UserStorageService } from './shared/user-storage.service';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,9 +34,11 @@ import { UserStorageService } from './shared/user-storage.service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseconfig),
+    AngularFireDatabaseModule,
     HttpModule
   ],
-  providers: [UserService,UserStorageService],
+  providers: [UserService , UserStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
